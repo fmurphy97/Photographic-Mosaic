@@ -40,8 +40,8 @@ class Mosaic:
 
         # Read the input images and make them smaller
         self.input_images = []
+        self.other_photos_rgb_colors = None
         self.process_input_images(other_photos_path, fit_method_name=fit_method)
-        self.other_photos_rgb_colors = np.zeros(shape=(len(self.input_images), color_size))
 
         # Using the distance between two points calculate
         self.pairwise_distances = self.calculate_distances()
@@ -108,6 +108,10 @@ class Mosaic:
         """
         img_list = utilities.find_images_in_path(images_directory)
         iterable = enumerate(img_list)
+
+        # Initialize the numpy array with the average colors
+        color_size = 3
+        self.other_photos_rgb_colors = np.zeros(shape=(len(img_list), color_size))
 
         for i, image in tqdm(iterable, desc='Processing Input Images'):
             # Resize the image
@@ -192,7 +196,7 @@ class Mosaic:
 if __name__ == "__main__":
     m = Mosaic(target_image_path="all_images/input.jpg",
                other_photos_path="all_images/input_photos",
-               enlargement=10,
-               tile_size=(50, 50),
+               enlargement=1,
+               tile_size=(10, 10),
                output_file="all_images/output.png",
                fit_method="crop")

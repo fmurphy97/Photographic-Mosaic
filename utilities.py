@@ -3,7 +3,7 @@ import pathlib
 from PIL import Image
 
 
-def load_image(filepath: str or pathlib.Path, image_mode: str) -> Image:
+def load_image(filepath: str or pathlib.Path, image_mode="RGB") -> Image:
     """
     Loads image file from path
     :param image_mode: to which mode will the image be converted, default: RGB
