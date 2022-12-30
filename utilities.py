@@ -55,14 +55,14 @@ def stretch_image_to_size(image: Image, new_size: tuple[int, int]) -> Image:
 
 def resize_image_keep_ratio(image: Image, proposed_size: tuple[int, int]) -> Image:
     """
-    Resize an image (conserving it´s aspect ratio) to a tile. Uses the smallest dimension to fit the borders
+    Resize an image (conserving it´s aspect ratio) to a tile. Uses the largest dimension to fit the borders
     :param image: target image
     :param proposed_size: the dimension of the new size in pixels
     :return: the fitted image
     """
     w, h = proposed_size
     W, H = image.size
-    resize_factor = min(w / W, h / H)
+    resize_factor = max(w / W, h / H)
     final_size = (int(W * resize_factor), int(H * resize_factor))
     return image.resize(final_size)
 
