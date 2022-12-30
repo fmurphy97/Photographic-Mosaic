@@ -183,10 +183,9 @@ class Mosaic:
 
 
 if __name__ == "__main__":
-    pass
-    # m = Mosaic(input_photo_path="../../sample_photos/Figu SIMU Astrid.png",
-    #            other_photos_path="../../sample_photos",
-    #            enlargement=10,
-    #            tile_size=(50, 50),
-    #            output_file="output.png",
-    #            fit_method="crop")
+    m = Mosaic(input_photo_path="all_images/input.jpg",
+               other_photos_path="all_images/input_photos",
+               enlargement=10,
+               tile_size=(50, 50),
+               output_file="all_images/output.png",
+               fit_method="crop")
