@@ -90,15 +90,17 @@ class Mosaic:
         rows, cols = self.mosaic_image_shape
 
         # Iterate over the rows and columns of the grid
-        row_cols_iterable = enumerate(itertools.product(range(rows), range(cols)))
+        row_cols_iterable = list(itertools.product(range(rows), range(cols)))
 
-        for k, (row, col) in tqdm(row_cols_iterable, desc='Dividing Original Image'):
+        k = 0
+        for row, col in tqdm(row_cols_iterable, desc='Dividing Original Image'):
             self.image_coordinates_in_order.append((row, col))
             top_left_point_coordinates = (col * tile_width, row * tile_height)
             bottom_right_point_coordinates = ((col + 1) * tile_width, (row + 1) * tile_height)
             coordinates = top_left_point_coordinates + bottom_right_point_coordinates
             cropped_img = initial_image.crop(coordinates)
             self.target_img_rgb_colors[k] = utilities.get_average_rgb_from_image(cropped_img)
+            k += 1
 
     def process_input_images(self, images_directory: str or pathlib.Path, fit_method_name: str):
         """
@@ -107,21 +109,23 @@ class Mosaic:
         :param fit_method_name: the way in which this image will be resized, can be "resize" or "crop"
         """
         img_list = utilities.find_images_in_path(images_directory)
-        iterable = enumerate(img_list)
 
         # Initialize the numpy array with the average colors
         color_size = 3
         self.other_photos_rgb_colors = np.zeros(shape=(len(img_list), color_size))
 
-        for i, image in tqdm(iterable, desc='Processing Input Images'):
+        k = 0
+        for image in tqdm(img_list, desc='Processing Input Images'):
             # Resize the image
             resized_image = utilities.fit_image_to_tile(image, self.tile_image_size, fit_method_name)
 
             # Get the average color of the image
-            self.other_photos_rgb_colors[i] = utilities.get_average_rgb_from_image(image)
+            self.other_photos_rgb_colors[k] = utilities.get_average_rgb_from_image(image)
 
             # Store it in the input images
             self.input_images.append(resized_image)
+
+            k += 1
 
     def calculate_distances(self) -> np.array:
         """
