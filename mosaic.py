@@ -26,7 +26,7 @@ class Mosaic:
         # Size of the tile image in pixels
         self.tile_image_size = tile_size
 
-        # Read the target image, enlarge it, and
+        # Read the target image, enlarge it, and get it´s final shape and size
         target_image = self.process_target_image(target_image_path, enlargement)
         self.mosaic_image_size = target_image.size  # Size of the final image in pixels
         self.mosaic_image_shape = self.get_total_number_of_tiles()  # mosaic shape (number of tiles in rows and columns)
@@ -43,7 +43,7 @@ class Mosaic:
         self.other_photos_rgb_colors = None
         self.process_input_images(other_photos_path, fit_method_name=fit_method)
 
-        # Using the distance between two points calculate
+        # Using the rgb points between two arrays calculate the pairwise distance
         self.pairwise_distances = self.calculate_distances()
         self.indices_of_best_images = self.assign_best_image(selected_method=method_to_select_images)
 
@@ -195,6 +195,18 @@ class Mosaic:
             grid_img.paste(tile, (col * tile_width, row * tile_height))
 
         return grid_img
+
+    def create_alpha_composite(self, img1, img2, alpha=0.5):
+        original_img = img1.convert('RGBA')
+        mosaic_img = img2.convert('RGBA')
+        alpha_blended = Image.blend(mosaic_img, original_img, alpha)
+        return alpha_blended
+
+    def merge_image_horizontally(self, img1, img2):
+        merged_img = Image.new('RGB', (img1.width * 2, img1.height))
+        merged_img.paste(img1, (0, 0))
+        merged_img.paste(img2, (img1.width, 0))
+        return merged_img
 
 
 if __name__ == "__main__":

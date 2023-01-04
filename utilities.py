@@ -108,3 +108,4 @@ def find_images_in_path(images_directory: str or pathlib.Path) -> list[Image]:
         if img:
             images.append(img)
     return images
+
