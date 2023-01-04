@@ -196,18 +196,6 @@ class Mosaic:
 
         return grid_img
 
-    def create_alpha_composite(self, img1, img2, alpha=0.5):
-        original_img = img1.convert('RGBA')
-        mosaic_img = img2.convert('RGBA')
-        alpha_blended = Image.blend(mosaic_img, original_img, alpha)
-        return alpha_blended
-
-    def merge_image_horizontally(self, img1, img2):
-        merged_img = Image.new('RGB', (img1.width * 2, img1.height))
-        merged_img.paste(img1, (0, 0))
-        merged_img.paste(img2, (img1.width, 0))
-        return merged_img
-
 
 if __name__ == "__main__":
     m = Mosaic(target_image_path="all_images/input.jpg",

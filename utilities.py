@@ -109,3 +109,18 @@ def find_images_in_path(images_directory: str or pathlib.Path) -> list[Image]:
             images.append(img)
     return images
 
+
+def create_alpha_composite(img1: Image, img2: Image, alpha=0.5):
+    top_image = img1.convert('RGBA')
+    bottom_image = img2.convert('RGBA')
+    alpha_blended = Image.blend(bottom_image, top_image, alpha)
+    return alpha_blended
+
+
+def merge_image_horizontally(img1: Image, img2: Image):
+    width = img1.width + img2.width
+    height = min(img1.height, img2.height)
+    merged_img = Image.new('RGB', (width, height))
+    merged_img.paste(img1, (0, 0))
+    merged_img.paste(img2, (img1.width, 0))
+    return merged_img
